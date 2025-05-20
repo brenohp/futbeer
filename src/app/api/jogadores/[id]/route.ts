@@ -3,23 +3,17 @@ import { supabase } from '@/lib/supabaseClient'
 import { Jogador } from '@/app/types'
 
 export const config = {
-  runtime: 'node', // para melhor compatibilidade com supabase
+  runtime: 'node',
 }
 
-export async function GET(
-  request: Request,
-  context: { params: { id: string } }
-) {
-  try {
-    const idNum = parseInt(context.params.id, 10)
-    if (isNaN(idNum)) {
-      return NextResponse.json({ error: 'ID inválido' }, { status: 400 })
-    }
+export async function GET(request: Request, context: any) {
+  const { id } = context.params
 
+  try {
     const { data, error } = await supabase
       .from('jogadores')
       .select('*')
-      .eq('id', idNum)
+      .eq('id', id)
       .single()
 
     if (error) throw error
@@ -32,28 +26,19 @@ export async function GET(
 
     return NextResponse.json(jogador)
   } catch (error) {
-    console.error(
-      'Erro ao ler jogador:',
-      error instanceof Error ? error.message : JSON.stringify(error)
-    )
+    console.error('Erro ao ler jogador:', error instanceof Error ? error.message : JSON.stringify(error))
     return NextResponse.json({ error: 'Erro ao ler jogador' }, { status: 500 })
   }
 }
 
-export async function DELETE(
-  request: Request,
-  context: { params: { id: string } }
-) {
-  try {
-    const idNum = parseInt(context.params.id, 10)
-    if (isNaN(idNum)) {
-      return NextResponse.json({ error: 'ID inválido' }, { status: 400 })
-    }
+export async function DELETE(request: Request, context: any) {
+  const { id } = context.params
 
+  try {
     const { data, error } = await supabase
       .from('jogadores')
       .delete()
-      .eq('id', idNum)
+      .eq('id', id)
       .select()
 
     if (error) throw error
@@ -64,10 +49,7 @@ export async function DELETE(
 
     return NextResponse.json({ message: 'Jogador deletado' })
   } catch (error) {
-    console.error(
-      'Erro ao deletar jogador:',
-      error instanceof Error ? error.message : JSON.stringify(error)
-    )
+    console.error('Erro ao deletar jogador:', error instanceof Error ? error.message : JSON.stringify(error))
     return NextResponse.json({ error: 'Erro ao deletar jogador' }, { status: 500 })
   }
 }
