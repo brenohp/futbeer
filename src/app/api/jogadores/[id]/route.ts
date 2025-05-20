@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
 
@@ -13,14 +13,9 @@ interface Jogador {
   derrotas: number
 }
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } } 
-) {
+export async function PUT(request: NextRequest, context: any) {
   try {
-    const resolvedParams = await params
-    const id = resolvedParams.id
-
+    const { id } = context.params
     const jogadorAtualizado: Jogador = await request.json()
 
     const data = fs.readFileSync(jsonPath, 'utf-8')
@@ -31,7 +26,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Jogador não encontrado' }, { status: 404 })
     }
 
-    jogadores[index] = { ...jogadores[index], ...jogadorAtualizado, id } // garante que o id não será alterado
+    jogadores[index] = { ...jogadores[index], ...jogadorAtualizado, id }
 
     fs.writeFileSync(jsonPath, JSON.stringify(jogadores, null, 2))
 
@@ -42,13 +37,9 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, context: any) {
   try {
-    const resolvedParams = await params
-    const id = resolvedParams.id
+    const { id } = context.params
 
     const data = fs.readFileSync(jsonPath, 'utf-8')
     const jogadores: Jogador[] = JSON.parse(data)
