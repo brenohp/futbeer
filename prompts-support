@@ -1,0 +1,28 @@
+/.next
+/node_modules
+/public
+
+/src 
+  /app
+    /admin
+       page.tsx
+    /components
+      Header.tsx
+      TabelaJogadores.tsx
+      TabelaPartidas.tsx
+      ModalJogador.tsx
+      ModalPartida.tsx
+    /data
+      jogadores.tsx
+      partida.tsx
+    /hooks
+      useOrdenacao.ts
+    /store
+      adminStore.ts
+
+
+    /types
+      index.ts
+  tsconfig.json
+
+Estrutura do projeto
