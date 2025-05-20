@@ -24,25 +24,27 @@ export default function ModalPartida({ isOpen, onClose, onSalvar, partidaEditand
   });
 
   useEffect(() => {
-    if (partidaEditando) {
-      setPartida({
-        ...partidaEditando,
-        jogadoresTime1: partidaEditando.jogadoresTime1 || '',
-        jogadoresTime2: partidaEditando.jogadoresTime2 || '',
-      });
-    } else {
-      setPartida({
-        id: '',
-        time1: '',
-        jogadoresTime1: '',
-        golsTime1: 0,
-        time2: '',
-        jogadoresTime2: '',
-        golsTime2: 0,
-        data: '',
-      });
+    if (isOpen) {
+      if (partidaEditando) {
+        setPartida({
+          ...partidaEditando,
+          jogadoresTime1: partidaEditando.jogadoresTime1 || '',
+          jogadoresTime2: partidaEditando.jogadoresTime2 || '',
+        });
+      } else {
+        setPartida({
+          id: '',
+          time1: '',
+          jogadoresTime1: '',
+          golsTime1: 0,
+          time2: '',
+          jogadoresTime2: '',
+          golsTime2: 0,
+          data: '',
+        });
+      }
     }
-  }, [partidaEditando]);
+  }, [isOpen, partidaEditando]);
 
   const handleSubmit = () => {
     if (!partida.time1 || !partida.time2 || !partida.data) return;

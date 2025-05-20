@@ -3,14 +3,11 @@ import fs from 'fs'
 import path from 'path'
 import { Jogador } from '@/app/types'
 
-
 const jsonPath = path.resolve(process.cwd(), 'src/app/data/jogadores.json')
+
 export const config = {
   runtime: 'node',
-};
-
-
-
+}
 
 export async function GET() {
   try {
@@ -29,7 +26,6 @@ export async function POST(request: Request) {
     const data = fs.readFileSync(jsonPath, 'utf-8')
     const jogadores: Jogador[] = JSON.parse(data)
 
-    // Obter o maior id atual, convertendo os ids para número
     const maiorId = jogadores.reduce((max, j) => {
       const idNum = Number(j.id)
       return idNum > max ? idNum : max

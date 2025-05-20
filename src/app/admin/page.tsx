@@ -1,74 +1,83 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAdminStore } from '@/app/store/adminStore'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAdminStore } from '@/app/store/adminStore';
 
-export default function AdminPage() {
-  const router = useRouter()
-  const { setAdmin, isAdmin } = useAdminStore()
-  const [usuario, setUsuario] = useState('')
-  const [senha, setSenha] = useState('')
-  const [loading, setLoading] = useState(false)
+export default function AdminLoginPage() {
+  const [login, setLogin] = useState('');
+  const [senha, setSenha] = useState('');
+  const [erro, setErro] = useState('');
+  const setAdmin = useAdminStore((state) => state.setAdmin);
+  const router = useRouter();
 
-  useEffect(() => {
-    if (isAdmin) {
-      router.push('/')
-    }
-  }, [isAdmin, router])
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErro('');
 
-  const handleLogin = async () => {
-    setLoading(true)
     try {
       const res = await fetch('/api/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ login: usuario, senha }),
-      })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ login, senha }),
+      });
 
       if (res.ok) {
-        setAdmin(true)
+        const data = await res.json();
+        if (data.success) {
+          setAdmin(true);
+          router.push('/'); // Redireciona para a página principal
+        } else {
+          setErro('Usuário ou senha incorretos');
+        }
       } else {
-        alert('Usuário ou senha incorretos!')
+        setErro('Erro na autenticação');
       }
-    } catch (error) {
-      console.error('Erro no login:', error)
-      alert('Erro ao tentar fazer login. Tente novamente.')
-    } finally {
-      setLoading(false)
+    } catch {
+      setErro('Erro no servidor');
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-sm mx-auto bg-white p-6 rounded shadow">
-        <h2 className="text-lg font-bold mb-4 text-gray-800">Acesso Restrito</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded shadow-md w-full max-w-sm"
+      >
+        <h1 className="text-2xl font-semibold mb-4">Login do Admin</h1>
+        {erro && <p className="text-red-600 mb-4">{erro}</p>}
+
+        <label className="block mb-2 font-medium" htmlFor="login">
+          Usuário
+        </label>
         <input
+          id="login"
           type="text"
-          placeholder="Usuário"
-          className="border rounded px-3 py-2 w-full mb-4 text-gray-800 placeholder-gray-800"
-          value={usuario}
-          onChange={(e) => setUsuario(e.target.value)}
-          disabled={loading}
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
+          className="w-full border border-gray-300 rounded px-3 py-2 mb-4"
+          required
         />
+
+        <label className="block mb-2 font-medium" htmlFor="senha">
+          Senha
+        </label>
         <input
+          id="senha"
           type="password"
-          placeholder="Senha"
-          className="border rounded px-3 py-2 w-full mb-4 text-gray-800 placeholder-gray-800"
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
-          disabled={loading}
+          className="w-full border border-gray-300 rounded px-3 py-2 mb-6"
+          required
         />
+
         <button
-          onClick={handleLogin}
-          className="bg-blue-600 text-white px-4 py-2 rounded w-full"
-          disabled={loading}
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
         >
-          {loading ? 'Entrando...' : 'Entrar'}
+          Entrar
         </button>
-      </div>
+      </form>
     </div>
-  )
+  );
 }

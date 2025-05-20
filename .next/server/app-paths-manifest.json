@@ -1,0 +1,7 @@
+{
+  "/admin/page": "app/admin/page.js",
+  "/api/jogadores/route": "app/api/jogadores/route.js",
+  "/api/partidas/route": "app/api/partidas/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js"
+}

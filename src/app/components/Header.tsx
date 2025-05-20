@@ -18,7 +18,7 @@ export default function Header({
 }: Props) {
   return (
     <header className="mb-8 text-center">
-      <h1 className="text-4xl font-extrabold text-blue-900 mb-6">Ranking da Pelada</h1>
+      <h1 className="text-4xl font-extrabold text-blue-900 mb-6">Tabela FutBeer</h1>
 
       <div className="flex flex-wrap justify-center gap-3 mb-4">
         <Button onClick={() => ordenarPor('pontos')}>Ordenar por Pontos</Button>

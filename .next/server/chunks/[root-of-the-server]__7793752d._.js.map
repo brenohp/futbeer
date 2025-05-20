@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 62, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/breno/OneDrive/Projetos/futbeer/src/app/api/login/route.ts"],"sourcesContent":["import { NextRequest, NextResponse } from 'next/server';\r\n\r\nexport async function POST(request: NextRequest) {\r\n  try {\r\n    const { login, senha } = await request.json();\r\n\r\n    if (login === 'admin' && senha === 'admin123') {\r\n      return NextResponse.json({ success: true });\r\n    } else {\r\n      return NextResponse.json({ success: false, message: 'Usuário ou senha incorretos' }, { status: 401 });\r\n    }\r\n  } catch (error) {\r\n    console.error(error);\r\n    return NextResponse.json({ success: false, message: 'Erro no servidor' }, { status: 500 });\r\n  }\r\n}\r\n"],"names":[],"mappings":";;;AAAA;;AAEO,eAAe,KAAK,OAAoB;IAC7C,IAAI;QACF,MAAM,EAAE,KAAK,EAAE,KAAK,EAAE,GAAG,MAAM,QAAQ,IAAI;QAE3C,IAAI,UAAU,WAAW,UAAU,YAAY;YAC7C,OAAO,gIAAA,CAAA,eAAY,CAAC,IAAI,CAAC;gBAAE,SAAS;YAAK;QAC3C,OAAO;YACL,OAAO,gIAAA,CAAA,eAAY,CAAC,IAAI,CAAC;gBAAE,SAAS;gBAAO,SAAS;YAA8B,GAAG;gBAAE,QAAQ;YAAI;QACrG;IACF,EAAE,OAAO,OAAO;QACd,QAAQ,KAAK,CAAC;QACd,OAAO,gIAAA,CAAA,eAAY,CAAC,IAAI,CAAC;YAAE,SAAS;YAAO,SAAS;QAAmB,GAAG;YAAE,QAAQ;QAAI;IAC1F;AACF","debugId":null}}]
+}

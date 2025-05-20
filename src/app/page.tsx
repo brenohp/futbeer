@@ -19,6 +19,7 @@ export default function Page() {
 
   const isAdmin = useAdminStore((state) => state.isAdmin);
 
+  // Carrega jogadores da API
   const carregarJogadores = async () => {
     try {
       const res = await fetch('/api/jogadores');
@@ -37,6 +38,7 @@ export default function Page() {
     }
   };
 
+  // Carrega partidas da API
   const carregarPartidas = async () => {
     try {
       const res = await fetch('/api/partidas');
@@ -60,6 +62,7 @@ export default function Page() {
     carregarPartidas();
   }, []);
 
+  // Modais controle
   const abrirModalJogador = () => setModalJogadorAberto(true);
   const fecharModalJogador = () => {
     setModalJogadorAberto(false);
@@ -72,6 +75,7 @@ export default function Page() {
     setPartidaEditando(null);
   };
 
+  // Ordena lista de jogadores por campo (ex: pontos, vitórias)
   const ordenarPor = (campo: keyof Jogador) => {
     const ordenados = [...jogadores].sort((a, b) =>
       a[campo] > b[campo] ? -1 : a[campo] < b[campo] ? 1 : 0
@@ -79,8 +83,10 @@ export default function Page() {
     setJogadores(ordenados);
   };
 
+  // Salva ou edita jogador
   const salvarJogador = async (jogador: Jogador) => {
     if (jogadorEditando) {
+      // Editar localmente (ideal atualizar via API e recarregar)
       setJogadores((prev) =>
         prev.map((j) => (j.id === jogador.id ? jogador : j))
       );
@@ -110,6 +116,7 @@ export default function Page() {
     }
   };
 
+  // Salva ou edita partida
   const salvarPartida = async (partida: Partida) => {
     if (partidaEditando) {
       try {
@@ -160,6 +167,7 @@ export default function Page() {
     }
   };
 
+  // Deletar partida
   const deletarPartida = async (id: string) => {
     if (!confirm('Tem certeza que deseja deletar essa partida?')) return;
 
@@ -182,6 +190,7 @@ export default function Page() {
     }
   };
 
+  // Deletar jogador (função que estava faltando passar para o componente)
   const deletarJogador = async (id: string) => {
     if (!confirm('Tem certeza que deseja deletar esse jogador?')) return;
 
@@ -221,7 +230,7 @@ export default function Page() {
             setJogadorEditando(jogador);
             abrirModalJogador();
           }}
-          onDeletar={deletarJogador}
+          onDeletar={deletarJogador}  
           isAdmin={isAdmin}
         />
 

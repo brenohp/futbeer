@@ -13,9 +13,14 @@ interface Jogador {
   derrotas: number
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } } 
+) {
   try {
-    const id = params.id
+    const resolvedParams = await params
+    const id = resolvedParams.id
+
     const jogadorAtualizado: Jogador = await request.json()
 
     const data = fs.readFileSync(jsonPath, 'utf-8')
@@ -37,19 +42,23 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
-    const id = params.id
+    const resolvedParams = await params
+    const id = resolvedParams.id
 
     const data = fs.readFileSync(jsonPath, 'utf-8')
-    const jogadores: Jogador[] = JSON.parse(data);
+    const jogadores: Jogador[] = JSON.parse(data)
 
     const index = jogadores.findIndex((j) => j.id === id)
     if (index === -1) {
       return NextResponse.json({ error: 'Jogador não encontrado' }, { status: 404 })
     }
 
-    jogadores.splice(index, 1) // remove o jogador do array
+    jogadores.splice(index, 1)
 
     fs.writeFileSync(jsonPath, JSON.stringify(jogadores, null, 2))
 

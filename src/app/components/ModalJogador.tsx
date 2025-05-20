@@ -8,10 +8,10 @@ type Props = {
   onClose: () => void;
   onSalvar: (jogador: Jogador) => void;
   jogadorEditando?: Jogador | null;
-  onAtualizar: () => void;
+  onAtualizar?: () => void; // opcional, já que não usou
 };
 
-export default function ModalJogador({ isOpen, onClose, onSalvar, jogadorEditando}: Props) {
+export default function ModalJogador({ isOpen, onClose, onSalvar, jogadorEditando }: Props) {
   const [jogador, setJogador] = useState<Jogador>({
     id: '',
     nome: '',
@@ -22,19 +22,21 @@ export default function ModalJogador({ isOpen, onClose, onSalvar, jogadorEditand
   });
 
   useEffect(() => {
-    if (jogadorEditando) {
-      setJogador(jogadorEditando);
-    } else {
-      setJogador({
-        id: '',
-        nome: '',
-        pontos: 0,
-        saldoGols: 0,
-        vitorias: 0,
-        derrotas: 0,
-      });
+    if (isOpen) {
+      if (jogadorEditando) {
+        setJogador(jogadorEditando);
+      } else {
+        setJogador({
+          id: '',
+          nome: '',
+          pontos: 0,
+          saldoGols: 0,
+          vitorias: 0,
+          derrotas: 0,
+        });
+      }
     }
-  }, [jogadorEditando]);
+  }, [isOpen, jogadorEditando]);
 
   if (!isOpen) return null;
 
