@@ -7,8 +7,8 @@ export const config = {
 
 export async function DELETE(_: Request, context: { params: { id: string } }) {
   try {
-    const params = await context.params
-    const idNum = parseInt(params.id, 10)
+    const { id } = context.params
+    const idNum = parseInt(id, 10)
     if (isNaN(idNum)) {
       return NextResponse.json({ error: 'ID inválido' }, { status: 400 })
     }
@@ -34,8 +34,8 @@ export async function DELETE(_: Request, context: { params: { id: string } }) {
 
 export async function PUT(request: Request, context: { params: { id: string } }) {
   try {
-    const params = await context.params
-    const idNum = parseInt(params.id, 10)
+    const { id } = context.params
+    const idNum = parseInt(id, 10)
     if (isNaN(idNum)) {
       return NextResponse.json({ error: 'ID inválido' }, { status: 400 })
     }
