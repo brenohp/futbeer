@@ -33,7 +33,7 @@ export default function TabelaJogadores({ jogadores, onEditar, onDeletar, isAdmi
                 <td className="py-2 px-4 font-semibold text-gray-800">{index + 1}</td>
                 <td className="py-2 px-4 font-semibold text-gray-800">{jogador.nome}</td>
                 <td className="py-2 px-4 font-semibold text-gray-800">{jogador.pontos}</td>
-                <td className="py-2 px-4 font-semibold text-gray-800">{jogador.saldoGols}</td>
+                <td className="py-2 px-4 font-semibold text-gray-800">{jogador.saldogols}</td>
                 <td className="py-2 px-4 font-semibold text-gray-800">{jogador.vitorias}</td>
                 <td className="py-2 px-4 font-semibold text-gray-800">{jogador.derrotas}</td>
                 {isAdmin && (

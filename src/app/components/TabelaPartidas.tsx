@@ -38,8 +38,8 @@ export default function TabelaPartidas({ partidas, onEditar, onDeletar, isAdmin 
                 <td className="py-2 px-4 font-semibold text-gray-800">{index + 1}</td>
                 <td className="py-2 px-4 font-semibold text-gray-800">{partida.time1}</td>
                 <td className="py-2 px-4 font-semibold text-gray-800">{partida.time2}</td>
-                <td className="py-2 px-4 font-semibold text-gray-800">{partida.golsTime1}</td>
-                <td className="py-2 px-4 font-semibold text-gray-800">{partida.golsTime2}</td>
+                <td className="py-2 px-4 font-semibold text-gray-800">{partida.golstime1}</td>
+                <td className="py-2 px-4 font-semibold text-gray-800">{partida.golstime2}</td>
                 <td className="py-2 px-4 font-semibold text-gray-800">
                   {new Date(partida.data).toLocaleDateString()}
                 </td>

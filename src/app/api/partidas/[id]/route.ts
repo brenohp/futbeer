@@ -1,55 +1,69 @@
-import fs from 'fs';
-import path from 'path';
-
-const jsonPath = path.resolve(process.cwd(), 'src/app/data/partidas.json');
+import { NextResponse } from 'next/server'
+import { supabase } from '@/lib/supabaseClient'
 
 export const config = {
-  runtime: 'node',
-};
+  runtime: 'node', // edge funciona, mas node é mais confiável com supabase
+}
 
-export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(_: Request, context: { params: { id: string } }) {
   try {
-    const { id } = await params;
+    const params = await context.params
+    const idNum = parseInt(params.id, 10)
+    if (isNaN(idNum)) {
+      return NextResponse.json({ error: 'ID inválido' }, { status: 400 })
+    }
 
-    const data = fs.readFileSync(jsonPath, 'utf-8');
-    let partidas = JSON.parse(data);
+    const { data, error } = await supabase
+      .from('partidas')
+      .delete()
+      .eq('id', idNum)
+      .select('*')
 
-    partidas = partidas.filter((p: { id: string }) => p.id !== id);
+    if (error) throw error
 
-    fs.writeFileSync(jsonPath, JSON.stringify(partidas, null, 2));
+    if (!data || data.length === 0) {
+      return NextResponse.json({ error: 'Partida não encontrada' }, { status: 404 })
+    }
 
-    return new Response(JSON.stringify({ message: 'Partida excluída com sucesso' }), { status: 200 });
+    return NextResponse.json({ message: 'Partida excluída com sucesso' })
   } catch (error) {
-    console.error('Erro no DELETE:', (error as Error).message);
-    return new Response(JSON.stringify({ error: 'Erro ao deletar partida' }), { status: 500 });
+    console.error('Erro ao deletar partida:', error instanceof Error ? error.message : JSON.stringify(error))
+    return NextResponse.json({ error: 'Erro ao deletar partida' }, { status: 500 })
   }
 }
 
-export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(request: Request, context: { params: { id: string } }) {
   try {
-    const { id } = await params;
-    const body = await req.json();
-
-    const data = fs.readFileSync(jsonPath, 'utf-8');
-    const partidas = JSON.parse(data);
-
-    const index = partidas.findIndex((p: { id: string }) => p.id === id);
-
-    if (index === -1) {
-      return new Response(JSON.stringify({ error: 'Partida não encontrada' }), { status: 404 });
+    const params = await context.params
+    const idNum = parseInt(params.id, 10)
+    if (isNaN(idNum)) {
+      return NextResponse.json({ error: 'ID inválido' }, { status: 400 })
     }
 
-    // Atualiza a partida existente com os novos dados do body
-    partidas[index] = { ...partidas[index], ...body };
+    const body = await request.json()
 
-    fs.writeFileSync(jsonPath, JSON.stringify(partidas, null, 2));
+    const updatedPartida = {
+      time1: body.time1,
+      jogadorestime1: body.jogadorestime1,
+      golstime1: body.golstime1,
+      time2: body.time2,
+      jogadorestime2: body.jogadorestime2,
+      golstime2: body.golstime2,
+      data: body.data,
+    }
 
-    return new Response(JSON.stringify(partidas[index]), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const { data, error } = await supabase
+      .from('partidas')
+      .update(updatedPartida)
+      .eq('id', idNum)
+      .select()
+      .single()
+
+    if (error) throw error
+
+    return NextResponse.json(data)
   } catch (error) {
-    console.error('Erro no PUT:', (error as Error).message);
-    return new Response(JSON.stringify({ error: 'Erro ao atualizar partida' }), { status: 500 });
+    console.error('Erro ao atualizar partida:', error instanceof Error ? error.message : JSON.stringify(error))
+    return NextResponse.json({ error: 'Erro ao atualizar partida' }, { status: 500 })
   }
 }

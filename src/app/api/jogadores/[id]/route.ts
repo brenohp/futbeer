@@ -1,61 +1,51 @@
-import { NextRequest, NextResponse } from 'next/server'
-import fs from 'fs'
-import path from 'path'
+import { NextResponse } from 'next/server'
+import { supabase } from '@/lib/supabaseClient'
+import { Jogador } from '@/app/types'
 
-const jsonPath = path.resolve(process.cwd(), 'src/app/data/jogadores.json')
-
-interface Jogador {
-  id: string
-  nome: string
-  pontos: number
-  saldoGols: number
-  vitorias: number
-  derrotas: number
+export const config = {
+  runtime: 'node', // troquei para 'node' para evitar problemas com supabase
 }
 
-export async function PUT(request: NextRequest, context: any) {
+export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
-    const { id } = context.params
-    const jogadorAtualizado: Jogador = await request.json()
+    const { data, error } = await supabase
+      .from('jogadores')
+      .select('*')
+      .eq('id', params.id)
+      .single()
 
-    const data = fs.readFileSync(jsonPath, 'utf-8')
-    const jogadores: Jogador[] = JSON.parse(data)
+    if (error) throw error
 
-    const index = jogadores.findIndex((j) => j.id === id)
-    if (index === -1) {
+    if (!data) {
       return NextResponse.json({ error: 'Jogador não encontrado' }, { status: 404 })
     }
 
-    jogadores[index] = { ...jogadores[index], ...jogadorAtualizado, id }
+    const jogador = data as Jogador
 
-    fs.writeFileSync(jsonPath, JSON.stringify(jogadores, null, 2))
-
-    return NextResponse.json(jogadores[index])
+    return NextResponse.json(jogador)
   } catch (error) {
-    console.error('Erro ao atualizar jogador:', error)
-    return NextResponse.json({ error: 'Erro ao atualizar jogador' }, { status: 500 })
+    console.error('Erro ao ler jogador:', error instanceof Error ? error.message : JSON.stringify(error))
+    return NextResponse.json({ error: 'Erro ao ler jogador' }, { status: 500 })
   }
 }
 
-export async function DELETE(request: NextRequest, context: any) {
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   try {
-    const { id } = context.params
+    const { data, error } = await supabase
+      .from('jogadores')
+      .delete()
+      .eq('id', params.id)
+      .select()
 
-    const data = fs.readFileSync(jsonPath, 'utf-8')
-    const jogadores: Jogador[] = JSON.parse(data)
+    if (error) throw error
 
-    const index = jogadores.findIndex((j) => j.id === id)
-    if (index === -1) {
+    if (!data || data.length === 0) {
       return NextResponse.json({ error: 'Jogador não encontrado' }, { status: 404 })
     }
 
-    jogadores.splice(index, 1)
-
-    fs.writeFileSync(jsonPath, JSON.stringify(jogadores, null, 2))
-
-    return NextResponse.json({ message: 'Jogador excluído com sucesso' }, { status: 200 })
+    return NextResponse.json({ message: 'Jogador deletado' })
   } catch (error) {
-    console.error('Erro ao deletar jogador:', error)
+    console.error('Erro ao deletar jogador:', error instanceof Error ? error.message : JSON.stringify(error))
     return NextResponse.json({ error: 'Erro ao deletar jogador' }, { status: 500 })
   }
 }

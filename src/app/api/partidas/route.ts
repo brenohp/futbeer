@@ -1,70 +1,89 @@
-import fs from 'fs';
-import path from 'path';
+import { NextResponse } from 'next/server'
+import { supabase } from '@/lib/supabaseClient'
+import { Partida } from '@/app/types'
 
-const jsonPath = path.resolve(process.cwd(), 'src/app/data/partidas.json');
 export const config = {
-  runtime: 'node',
-};
-
-export type Partida = {
-  id: string;
-  time1: string;
-  jogadoresTime1?: string;
-  golsTime1: number;
-  time2: string;
-  jogadoresTime2?: string;
-  golsTime2: number;
-  data: string;
-};
+  runtime: 'node', // mais estável com supabase
+}
 
 export async function GET() {
   try {
-    const data = fs.readFileSync(jsonPath, 'utf-8');
-    const partidas: Partida[] = JSON.parse(data);
-    return new Response(JSON.stringify(partidas), { status: 200 });
+    const { data, error } = await supabase
+      .from('partidas')
+      .select('*')
+      .order('id', { ascending: true })
+
+    if (error) throw error
+
+    return NextResponse.json(data ?? [])
   } catch (error) {
-    console.error('Erro ao ler partidas:', (error as Error).message);
-    return new Response(JSON.stringify({ error: 'Erro ao ler partidas' }), { status: 500 });
+    console.error('Erro ao buscar partidas:', error instanceof Error ? error.message : JSON.stringify(error))
+    return NextResponse.json({ error: 'Erro ao buscar partidas' }, { status: 500 })
   }
 }
 
 export async function POST(request: Request) {
   try {
-    const newPartida = await request.json() as Partida;
+    const body = await request.json()
 
-    const data = fs.readFileSync(jsonPath, 'utf-8');
-    const partidas: Partida[] = JSON.parse(data);
+    const newPartida = {
+      time1: body.time1,
+      jogadorestime1: body.jogadorestime1,
+      golstime1: body.golstime1,
+      time2: body.time2,
+      jogadorestime2: body.jogadorestime2,
+      golstime2: body.golstime2,
+      data: body.data,
+    }
 
-    const newId = partidas.length > 0
-      ? (Math.max(...partidas.map(p => Number(p.id))) + 1).toString()
-      : '1';
-    newPartida.id = newId;
+    const { data, error } = await supabase
+      .from('partidas')
+      .insert([newPartida])
+      .select()
+      .single()
 
-    partidas.push(newPartida);
+    if (error) throw error
 
-    fs.writeFileSync(jsonPath, JSON.stringify(partidas, null, 2));
-
-    return new Response(JSON.stringify(newPartida), { status: 201 });
+    return NextResponse.json(data, { status: 201 })
   } catch (error) {
-    console.error('Erro ao salvar partida:', (error as Error).message);
-    return new Response(JSON.stringify({ error: 'Erro ao salvar partida' }), { status: 500 });
+    console.error('Erro ao salvar partida:', error instanceof Error ? error.message : JSON.stringify(error))
+    return NextResponse.json({ error: 'Erro ao salvar partida' }, { status: 500 })
   }
 }
 
 export async function PUT(request: Request) {
   try {
-    const updatedPartida = await request.json() as Partida;
+    const body = await request.json()
 
-    const data = fs.readFileSync(jsonPath, 'utf-8');
-    let partidas: Partida[] = JSON.parse(data);
+    // Garantir que o id seja número válido
+    const id = typeof body.id === 'string' ? parseInt(body.id, 10) : body.id
 
-    partidas = partidas.map(p => (p.id === updatedPartida.id ? updatedPartida : p));
+    if (!id || isNaN(id)) {
+      return NextResponse.json({ error: 'ID da partida é obrigatório e deve ser um número válido' }, { status: 400 })
+    }
 
-    fs.writeFileSync(jsonPath, JSON.stringify(partidas, null, 2));
+    const updatedPartida = {
+      time1: body.time1,
+      jogadorestime1: body.jogadorestime1,
+      golstime1: body.golstime1,
+      time2: body.time2,
+      jogadorestime2: body.jogadorestime2,
+      golstime2: body.golstime2,
+      data: body.data,
+    }
 
-    return new Response(JSON.stringify(updatedPartida), { status: 200 });
+    const { data, error } = await supabase
+      .from('partidas')
+      .update(updatedPartida)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) throw error
+
+    return NextResponse.json(data)
   } catch (error) {
-    console.error('Erro ao atualizar partida:', (error as Error).message);
-    return new Response(JSON.stringify({ error: 'Erro ao atualizar partida' }), { status: 500 });
+    console.error('Erro ao atualizar partida:', error instanceof Error ? error.message : JSON.stringify(error))
+    return NextResponse.json({ error: 'Erro ao atualizar partida' }, { status: 500 })
   }
 }

@@ -16,7 +16,7 @@ export default function ModalJogador({ isOpen, onClose, onSalvar, jogadorEditand
     id: '',
     nome: '',
     pontos: 0,
-    saldoGols: 0,
+    saldogols: 0,
     vitorias: 0,
     derrotas: 0,
   });
@@ -30,7 +30,7 @@ export default function ModalJogador({ isOpen, onClose, onSalvar, jogadorEditand
           id: '',
           nome: '',
           pontos: 0,
-          saldoGols: 0,
+          saldogols: 0,
           vitorias: 0,
           derrotas: 0,
         });
@@ -91,8 +91,8 @@ export default function ModalJogador({ isOpen, onClose, onSalvar, jogadorEditand
           <input
             id="saldoGols"
             type="number"
-            value={jogador.saldoGols}
-            onChange={(e) => setJogador({ ...jogador, saldoGols: Number(e.target.value) })}
+            value={jogador.saldogols}
+            onChange={(e) => setJogador({ ...jogador, saldogols: Number(e.target.value) })}
             className="w-full p-2 border border-gray-300 rounded"
             placeholder="Saldo de Gol"
           />

@@ -15,11 +15,11 @@ export default function ModalPartida({ isOpen, onClose, onSalvar, partidaEditand
   const [partida, setPartida] = useState<Partida>({
     id: '',
     time1: '',
-    jogadoresTime1: '',
-    golsTime1: 0,
+    jogadorestime1: '',
+    golstime1: 0,
     time2: '',
-    jogadoresTime2: '',
-    golsTime2: 0,
+    jogadorestime2: '',
+    golstime2: 0,
     data: '',
   });
 
@@ -28,18 +28,18 @@ export default function ModalPartida({ isOpen, onClose, onSalvar, partidaEditand
       if (partidaEditando) {
         setPartida({
           ...partidaEditando,
-          jogadoresTime1: partidaEditando.jogadoresTime1 || '',
-          jogadoresTime2: partidaEditando.jogadoresTime2 || '',
+          jogadorestime1: partidaEditando.jogadorestime1 || '',
+          jogadorestime2: partidaEditando.jogadorestime2 || '',
         });
       } else {
         setPartida({
           id: '',
           time1: '',
-          jogadoresTime1: '',
-          golsTime1: 0,
+          jogadorestime1: '',
+          golstime1: 0,
           time2: '',
-          jogadoresTime2: '',
-          golsTime2: 0,
+          jogadorestime2: '',
+          golstime2: 0,
           data: '',
         });
       }
@@ -82,8 +82,8 @@ export default function ModalPartida({ isOpen, onClose, onSalvar, partidaEditand
             <label className="text-sm font-medium text-gray-700">Jogadores</label>
             <Input
               placeholder="Jogadores do Time 1"
-              value={partida.jogadoresTime1}
-              onChange={(e) => setPartida({ ...partida, jogadoresTime1: e.target.value })}
+              value={partida.jogadorestime1}
+              onChange={(e) => setPartida({ ...partida, jogadorestime1: e.target.value })}
             />
           </div>
 
@@ -92,8 +92,8 @@ export default function ModalPartida({ isOpen, onClose, onSalvar, partidaEditand
             <Input
               type="number"
               placeholder="Gols do Time 1"
-              value={partida.golsTime1}
-              onChange={(e) => setPartida({ ...partida, golsTime1: +e.target.value })}
+              value={partida.golstime1}
+              onChange={(e) => setPartida({ ...partida, golstime1: +e.target.value })}
             />
           </div>
 
@@ -110,8 +110,8 @@ export default function ModalPartida({ isOpen, onClose, onSalvar, partidaEditand
             <label className="text-sm font-medium text-gray-700">Jogadores</label>
             <Input
               placeholder="Jogadores do Time 2"
-              value={partida.jogadoresTime2}
-              onChange={(e) => setPartida({ ...partida, jogadoresTime2: e.target.value })}
+              value={partida.jogadorestime2}
+              onChange={(e) => setPartida({ ...partida, jogadorestime2: e.target.value })}
             />
           </div>
 
@@ -120,8 +120,8 @@ export default function ModalPartida({ isOpen, onClose, onSalvar, partidaEditand
             <Input
               type="number"
               placeholder="Gols do Time 2"
-              value={partida.golsTime2}
-              onChange={(e) => setPartida({ ...partida, golsTime2: +e.target.value })}
+              value={partida.golstime2}
+              onChange={(e) => setPartida({ ...partida, golstime2: +e.target.value })}
             />
           </div>
 

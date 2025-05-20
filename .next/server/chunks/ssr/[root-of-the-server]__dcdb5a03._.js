@@ -75,7 +75,7 @@ function Header({ ordenarPor, isAdmin, abrirModalJogador, abrirModalPartida }) {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
                 className: "text-4xl font-extrabold text-blue-900 mb-6",
-                children: "Ranking da Pelada"
+                children: "Tabela FutBeer"
             }, void 0, false, {
                 fileName: "[project]/src/app/components/Header.tsx",
                 lineNumber: 21,
@@ -282,7 +282,7 @@ function TabelaJogadores({ jogadores, onEditar, onDeletar, isAdmin }) {
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                     className: "py-2 px-4 font-semibold text-gray-800",
-                                    children: jogador.saldoGols
+                                    children: jogador.saldogols
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/TabelaJogadores.tsx",
                                     lineNumber: 36,
@@ -504,7 +504,7 @@ function TabelaPartidas({ partidas, onEditar, onDeletar, isAdmin }) {
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                     className: "py-2 px-4 font-semibold text-gray-800",
-                                    children: partida.golsTime1
+                                    children: partida.golstime1
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/TabelaPartidas.tsx",
                                     lineNumber: 41,
@@ -512,7 +512,7 @@ function TabelaPartidas({ partidas, onEditar, onDeletar, isAdmin }) {
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                     className: "py-2 px-4 font-semibold text-gray-800",
-                                    children: partida.golsTime2
+                                    children: partida.golstime2
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/TabelaPartidas.tsx",
                                     lineNumber: 42,
@@ -609,7 +609,7 @@ function ModalJogador({ isOpen, onClose, onSalvar, jogadorEditando }) {
         id: '',
         nome: '',
         pontos: 0,
-        saldoGols: 0,
+        saldogols: 0,
         vitorias: 0,
         derrotas: 0
     });
@@ -622,7 +622,7 @@ function ModalJogador({ isOpen, onClose, onSalvar, jogadorEditando }) {
                     id: '',
                     nome: '',
                     pontos: 0,
-                    saldoGols: 0,
+                    saldogols: 0,
                     vitorias: 0,
                     derrotas: 0
                 });
@@ -737,10 +737,10 @@ function ModalJogador({ isOpen, onClose, onSalvar, jogadorEditando }) {
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                             id: "saldoGols",
                             type: "number",
-                            value: jogador.saldoGols,
+                            value: jogador.saldogols,
                             onChange: (e)=>setJogador({
                                     ...jogador,
-                                    saldoGols: Number(e.target.value)
+                                    saldogols: Number(e.target.value)
                                 }),
                             className: "w-full p-2 border border-gray-300 rounded",
                             placeholder: "Saldo de Gol"
@@ -902,11 +902,11 @@ function ModalPartida({ isOpen, onClose, onSalvar, partidaEditando }) {
     const [partida, setPartida] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
         id: '',
         time1: '',
-        jogadoresTime1: '',
-        golsTime1: 0,
+        jogadorestime1: '',
+        golstime1: 0,
         time2: '',
-        jogadoresTime2: '',
-        golsTime2: 0,
+        jogadorestime2: '',
+        golstime2: 0,
         data: ''
     });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
@@ -914,18 +914,18 @@ function ModalPartida({ isOpen, onClose, onSalvar, partidaEditando }) {
             if (partidaEditando) {
                 setPartida({
                     ...partidaEditando,
-                    jogadoresTime1: partidaEditando.jogadoresTime1 || '',
-                    jogadoresTime2: partidaEditando.jogadoresTime2 || ''
+                    jogadorestime1: partidaEditando.jogadorestime1 || '',
+                    jogadorestime2: partidaEditando.jogadorestime2 || ''
                 });
             } else {
                 setPartida({
                     id: '',
                     time1: '',
-                    jogadoresTime1: '',
-                    golsTime1: 0,
+                    jogadorestime1: '',
+                    golstime1: 0,
                     time2: '',
-                    jogadoresTime2: '',
-                    golsTime2: 0,
+                    jogadorestime2: '',
+                    golstime2: 0,
                     data: ''
                 });
             }
@@ -1001,10 +1001,10 @@ function ModalPartida({ isOpen, onClose, onSalvar, partidaEditando }) {
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                     placeholder: "Jogadores do Time 1",
-                                    value: partida.jogadoresTime1,
+                                    value: partida.jogadorestime1,
                                     onChange: (e)=>setPartida({
                                             ...partida,
-                                            jogadoresTime1: e.target.value
+                                            jogadorestime1: e.target.value
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/ModalPartida.tsx",
@@ -1030,10 +1030,10 @@ function ModalPartida({ isOpen, onClose, onSalvar, partidaEditando }) {
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                     type: "number",
                                     placeholder: "Gols do Time 1",
-                                    value: partida.golsTime1,
+                                    value: partida.golstime1,
                                     onChange: (e)=>setPartida({
                                             ...partida,
-                                            golsTime1: +e.target.value
+                                            golstime1: +e.target.value
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/ModalPartida.tsx",
@@ -1086,10 +1086,10 @@ function ModalPartida({ isOpen, onClose, onSalvar, partidaEditando }) {
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                     placeholder: "Jogadores do Time 2",
-                                    value: partida.jogadoresTime2,
+                                    value: partida.jogadorestime2,
                                     onChange: (e)=>setPartida({
                                             ...partida,
-                                            jogadoresTime2: e.target.value
+                                            jogadorestime2: e.target.value
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/ModalPartida.tsx",
@@ -1115,10 +1115,10 @@ function ModalPartida({ isOpen, onClose, onSalvar, partidaEditando }) {
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                     type: "number",
                                     placeholder: "Gols do Time 2",
-                                    value: partida.golsTime2,
+                                    value: partida.golstime2,
                                     onChange: (e)=>setPartida({
                                             ...partida,
-                                            golsTime2: +e.target.value
+                                            golstime2: +e.target.value
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/ModalPartida.tsx",
