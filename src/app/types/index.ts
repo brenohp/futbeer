@@ -1,5 +1,5 @@
 export type Jogador = {
-  id: number; // era string, agora deve ser number
+  id: string; // era string, agora deve ser number
   nome: string;
   pontos: number;
   saldogols: number;
@@ -8,7 +8,7 @@ export type Jogador = {
 };
 
 export type Partida = {
-  id: number; // era string, agora deve ser number
+  id: string; 
   time1: string;
   jogadorestime1?: string;
   golstime1: number;

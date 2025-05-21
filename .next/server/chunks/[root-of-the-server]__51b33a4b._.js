@@ -134,9 +134,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient
 const config = {
     runtime: 'node'
 };
-async function GET(request, { params }) {
+async function GET(request, context) {
+    const { id } = await context.params;
     try {
-        const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('jogadores').select('*').eq('id', params.id).single();
+        const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('jogadores').select('*').eq('id', id).single();
         if (error) throw error;
         if (!data) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
@@ -156,9 +157,10 @@ async function GET(request, { params }) {
         });
     }
 }
-async function DELETE(request, { params }) {
+async function DELETE(request, context) {
+    const { id } = await context.params;
     try {
-        const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('jogadores').delete().eq('id', params.id).select();
+        const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('jogadores').delete().eq('id', id).select();
         if (error) throw error;
         if (!data || data.length === 0) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({

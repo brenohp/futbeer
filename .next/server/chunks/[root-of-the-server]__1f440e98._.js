@@ -124,6 +124,7 @@ var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
     "DELETE": (()=>DELETE),
+    "GET": (()=>GET),
     "PUT": (()=>PUT),
     "config": (()=>config)
 });
@@ -134,18 +135,67 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient
 const config = {
     runtime: 'node'
 };
-async function DELETE(_, context) {
+async function GET(request, context) {
+    const { id } = await context.params;
     try {
-        const params = await context.params;
-        const idNum = parseInt(params.id, 10);
-        if (isNaN(idNum)) {
+        const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('jogadores').select('*').eq('id', id).single();
+        if (error) throw error;
+        if (!data) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'ID inválido'
+                error: 'Jogador não encontrado'
+            }, {
+                status: 404
+            });
+        }
+        const jogador = data;
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(jogador);
+    } catch (error) {
+        console.error('Erro ao ler jogador:', error instanceof Error ? error.message : JSON.stringify(error));
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            error: 'Erro ao ler jogador'
+        }, {
+            status: 500
+        });
+    }
+}
+async function PUT(request) {
+    try {
+        const body = await request.json();
+        // Garantir que o id seja número válido
+        const id = typeof body.id === 'string' ? parseInt(body.id, 10) : body.id;
+        if (!id || isNaN(id)) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'ID da partida é obrigatório e deve ser um número válido'
             }, {
                 status: 400
             });
         }
-        const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('partidas').delete().eq('id', idNum).select('*');
+        const updatedPartida = {
+            time1: body.time1,
+            jogadorestime1: body.jogadorestime1,
+            golstime1: body.golstime1,
+            time2: body.time2,
+            jogadorestime2: body.jogadorestime2,
+            golstime2: body.golstime2,
+            data: body.data
+        };
+        const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('partidas').update(updatedPartida).eq('id', id).select().single();
+        if (error) throw error;
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(data);
+    } catch (error) {
+        console.error('Erro ao atualizar partida:', error instanceof Error ? error.message : JSON.stringify(error));
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            error: 'Erro ao atualizar partida'
+        }, {
+            status: 500
+        });
+    }
+}
+async function DELETE(request, context) {
+    const { id } = await context.params;
+    try {
+        const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('partidas').delete().eq('id', id) // id é UUID string
+        .select();
         if (error) throw error;
         if (!data || data.length === 0) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
@@ -161,39 +211,6 @@ async function DELETE(_, context) {
         console.error('Erro ao deletar partida:', error instanceof Error ? error.message : JSON.stringify(error));
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             error: 'Erro ao deletar partida'
-        }, {
-            status: 500
-        });
-    }
-}
-async function PUT(request, context) {
-    try {
-        const params = await context.params;
-        const idNum = parseInt(params.id, 10);
-        if (isNaN(idNum)) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'ID inválido'
-            }, {
-                status: 400
-            });
-        }
-        const body = await request.json();
-        const updatedPartida = {
-            time1: body.time1,
-            jogadorestime1: body.jogadorestime1,
-            golstime1: body.golstime1,
-            time2: body.time2,
-            jogadorestime2: body.jogadorestime2,
-            golstime2: body.golstime2,
-            data: body.data
-        };
-        const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["supabase"].from('partidas').update(updatedPartida).eq('id', idNum).select().single();
-        if (error) throw error;
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(data);
-    } catch (error) {
-        console.error('Erro ao atualizar partida:', error instanceof Error ? error.message : JSON.stringify(error));
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: 'Erro ao atualizar partida'
         }, {
             status: 500
         });

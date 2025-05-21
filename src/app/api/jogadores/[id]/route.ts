@@ -7,7 +7,7 @@ export const config = {
 }
 
 export async function GET(request: Request, context: any) {
-  const { id } = context.params
+  const { id } = await context.params
 
   try {
     const { data, error } = await supabase
@@ -32,7 +32,7 @@ export async function GET(request: Request, context: any) {
 }
 
 export async function DELETE(request: Request, context: any) {
-  const { id } = context.params
+  const { id } = await context.params
 
   try {
     const { data, error } = await supabase

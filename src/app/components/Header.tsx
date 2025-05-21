@@ -22,7 +22,7 @@ export default function Header({
 
       <div className="flex flex-wrap justify-center gap-3 mb-4">
         <Button onClick={() => ordenarPor('pontos')}>Ordenar por Pontos</Button>
-        <Button onClick={() => ordenarPor('saldoGols')}>Saldo de Gols</Button>
+        <Button onClick={() => ordenarPor('saldogols')}>Saldo de Gols</Button>
         <Button onClick={() => ordenarPor('vitorias')}>Vitórias</Button>
         <Button onClick={() => ordenarPor('derrotas')}>Derrotas</Button>
       </div>
